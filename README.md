@@ -1,6 +1,4 @@
-# treelab-backend-tutorial
-
-使用GraphQl和NodeJS的简单后端测试
+# 使用GraphQl和NodeJS的简单后端测试
 
 # 目标
 在此后端入门教程中，您的任务是为表格设计一个给前段的GraphQL的数据架构。本文件里面已经有一个CSV文件拥有大约一万行的数据。你可以用这个CSV数据来显示，不需要创建任何数据库。你只需要用GraphQL来返回数据成一下定义的格式。
