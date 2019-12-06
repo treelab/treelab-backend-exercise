@@ -1,38 +1,37 @@
-# treelab-backend-tutorial
-A simple backend test using GraphQl and NodeJS
+＃treelab-backend-tutorial
+使用GraphQl和NodeJS的简单后端测试
 
-# Goal
-Your task in this backend onboarding tutorial is to design a data schema for a table.
+＃目标
+在此后端入门教程中，您的任务是为表设计数据模式。
 
-## Explanation
-You should be able to get cells from either columns or rows. The goal is to design the schema so that it is easy
-to reorder the columns and rows without having to reorder all the cells and also to make rendering for the frontend
+##说明
+您应该能够从列或行中获取单元格。 目标是设计架构，使其易于
+重新排列列和行，而不必重新排列所有单元格，还为前端进行渲染
 
-## Schema Definition
-A table has three things that you must consider and they are columns, rows, and cells.
+##模式定义
+表具有三项必须考虑的事项，它们分别是列，行和单元格。
 
-## Table Properties
-1. Name
-2. Columns
-3. Rows
+##表属性
+1.姓名
+2.栏
+3.行
 
-## Column Properties
-A column has the following properties 
-1. Name
-2. Order
-3. Cells
+##列属性
+列具有以下属性
+1.姓名
+2.订购
+3.细胞
 
-## Row Properties
-1. Name 
-2. Order
-3. Cells
+##行属性
+1.姓名
+2.订购
+3.细胞
 
-## Cell Properties
-1. Value
+##单元格属性
+1.价值
 
-# Bonus Features/Endpoints
+＃奖励功能/端点
 
-## Pagination
-You should design the schema so that the frontend can say how many rows to return from the query. For example,
-the frontend should be able to say it wants only the first 10 rows. 
-
+##分页
+您应该设计架构，以便前端可以说出要从查询返回多少行。 例如，
+前端应该能够说它只需要前10行。
