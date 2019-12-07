@@ -1,42 +1,89 @@
 const { ApolloServer, gql } = require('apollo-server');
+const data =  require('./data/readfile');
 
 // A schema is a collection of type definitions (hence "typeDefs")
 // that together define the "shape" of queries that are executed against
 // your data.
 const typeDefs = gql`
-	# Comments in GraphQL strings (such as this one) start with the hash (#) symbol.
-
-	# This "Book" type defines the queryable fields for every book in our data source.
-	type Book {
-		title: String
-		author: String
+#total总记录数 #paging当前分页信息 #item查找指定条目 #orderby字段排序('totalprofit'为例子)
+    type Query{
+        total:Int
+		paging(current:Int,limit:Int,orderby:String):Page
+		item(orderid:String):Item
 	}
+	
+#行记录
+    type Item {
+        region:String
+        country:String
+        itemtype:String
+        saleschannel:String
+        orderpriority:String
+        orderdate:String
+        orderid:String
+        shipdate:String
+        unitssold:String
+        unitprice:String
+        unitcost:String
+        totalrevenue:String
+        totalcost:String
+        totalprofit:String
+    }
 
-	# The "Query" type is special: it lists all of the available queries that
-	# clients can execute, along with the return type for each. In this
-	# case, the "books" query returns an array of zero or more Books (defined above).
-	type Query {
-		books: [Book]
+#分页信息 totalpage总分数 current当前页 list当前分页数据条目
+    type Page {
+        totalpage:Int
+        current:Int
+        list:[Item]
 	}
 `;
 
-const books = [
-	{
-		title: 'Harry Potter and the Chamber of Secrets',
-		author: 'J.K. Rowling',
-	},
-	{
-		title: 'Jurassic Park',
-		author: 'Michael Crichton',
-	},
-];
-
 const resolvers = {
 	Query: {
-		books: () => books,
-	},
+        total:()=>data.length,
+        paging:(root,{current =1,limit=10,orderby})=>{
+			let cache = [];
+            if(limit <0 ||current <=0 ){
+                return null
+			}
+
+			//数据预处理
+			if(orderby=='totalprofit_desc'){
+				// totalprofit字段的降序排列
+				cache = require('./orderby/profit_desc')(data);
+			}else if(orderby=='totalprofit_asc'){
+				// totalprofit字段的升序排列
+				cache = require('./orderby/profit_asc')(data);
+			}else{
+				cache = data;
+			}
+
+            let len =  cache.length
+            let pages = Math.floor(len/limit)
+            
+            if( current >pages){
+                return null
+            }
+
+            head =  limit*(current-1)
+            tail =  limit*current
+
+            if (tail > len){
+                return {totalpage:pages,current:current,list:cache.slice(head)}
+            }else{
+                return  {totalpage:pages,current:current,list:cache.slice(head,tail)}
+            }
+		},
+		item:(root,{ orderid })=>{
+			return data.filter(item=>{
+				return item['orderid'] == orderid
+			})[0]
+		},
+    },
+
 };
 
+// console.log(data.slice(0,3))
 // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers.
 const server = new ApolloServer({ typeDefs, resolvers });
@@ -45,3 +92,17 @@ const server = new ApolloServer({ typeDefs, resolvers });
 server.listen().then(({ url }) => {
 	console.log(`🚀  Server ready at ${url}`);
 });
+
+// {
+//     total,
+//     paging(current:4,limit:5,orderby:"totalprofit_asc"){
+//       totalpage
+//         current
+//       list{
+//         orderpriority
+//         region
+//         itemtype
+//         totalprofit
+//       }
+//     }
+// }
