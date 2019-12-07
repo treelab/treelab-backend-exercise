@@ -42,21 +42,23 @@ const resolvers = {
 	Query: {
         total:()=>data.length,
         paging:(root,{current =1,limit=10,orderby})=>{
-			let cache = [];
+            let cache = [];
+            let err;
             if(limit <0 ||current <=0 ){
                 return null
 			}
 
-			//数据预处理
-			if(orderby=='totalprofit_desc'){
-				// totalprofit字段的降序排列
-				cache = require('./orderby/profit_desc')(data);
-			}else if(orderby=='totalprofit_asc'){
-				// totalprofit字段的升序排列
-				cache = require('./orderby/profit_asc')(data);
-			}else{
+            //数据预处理
+            if(orderby != undefined){
+                r= require('./orderby/common')(data,'totalprofit_desc');
+                if (r.err != null){
+                    return null
+                }
+                cache =  r.data;
+                // console.log(cache)
+            }else{
 				cache = data;
-			}
+            }
 
             let len =  cache.length
             let pages = Math.floor(len/limit)
