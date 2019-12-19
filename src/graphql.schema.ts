@@ -7,6 +7,7 @@
 /* tslint:disable */
 export class Column {
     name?: string;
+    value?: string;
 }
 
 export abstract class IQuery {
