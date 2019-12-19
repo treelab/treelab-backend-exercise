@@ -1,0 +1,17 @@
+type Query {
+    getRows(
+        page:Int!
+        limit:Int!
+        ):Result
+}
+type Result {
+    rows: [Row]
+    total: Int
+}
+type Row {
+    columns:[Column]
+}
+type Column {
+    name: String
+    value: String
+}
