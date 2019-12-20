@@ -16,12 +16,11 @@ export class CsvService {
                         columns = columns.concat(row);
                         index++;
                     } else {
-                        const newArr = [];
+                        const newObj = {};
                         for (let i = 0; i < columns.length; i++) {
-                            const newObj = {name: columns[i], value: row[i]};
-                            newArr.push(newObj);
+                            newObj[columns[i]] = row[i];
                         }
-                        data.push({columns: newArr});
+                        data.push(newObj);
                     }
                 }).on('end', () => {
                     resolve(data);

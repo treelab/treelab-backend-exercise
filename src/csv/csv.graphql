@@ -1,3 +1,4 @@
+scalar Any
 type Query {
     getRows(
         page:Int!
@@ -5,13 +6,6 @@ type Query {
         ):Csv
 }
 type Csv {
-    rows: [Row]
+    rows: [Any]
     total: Int
-}
-type Row {
-    columns:[Column]
-}
-type Column {
-    name: String
-    value: String
 }
