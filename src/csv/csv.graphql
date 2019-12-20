@@ -2,9 +2,9 @@ type Query {
     getRows(
         page:Int!
         limit:Int!
-        ):Result
+        ):Csv
 }
-type Result {
+type Csv {
     rows: [Row]
     total: Int
 }

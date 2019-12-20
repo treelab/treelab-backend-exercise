@@ -18,12 +18,10 @@ export class CsvService {
                     } else {
                         const newArr = [];
                         for (let i = 0; i < columns.length; i++) {
-                            const newObj = {};
-                            newObj[columns[i]] =  row[i];
+                            const newObj = {name: columns[i], value: row[i]};
                             newArr.push(newObj);
                         }
-
-                        data.push(newArr);
+                        data.push({columns: newArr});
                     }
                 }).on('end', () => {
                     resolve(data);
